@@ -12,24 +12,19 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 #
-# == Class: zanata::wildfly
+# == Class: zanata::site
 #
-class zanata::wildfly(
-  $wildfly_version = '8.1.0',
-  $wildfly_install_source = 'http://download.jboss.org/wildfly/8.2.0.Final/wildfly-8.1.0.Final.tar.gz',
-  $wildfly_install_file = 'wildfly-8.1.0.Final.tar.gz',
+class zanata::site(
+  $db_name = '',
+  $db_username = '',
+  $db_password = '',
+  $dbhost = 'localhost',
 ) {
-  include wildfly
 
-  package { 'openjdk-7-jre-headless':
-    ensure => present,
-  }
-
-  class { 'wildfly::install':
-    version        => $wildfly_version,
-    install_source => $wildfly_install_source,
-    install_file   => $wildfly_install_file,
-    java_home      => '/usr/lib/jvm/java-7-openjdk-amd64/jre/',
-    require        => Package['openjdk-7-jre-headless'],
+  file { '/opt/wildfly/standalone/deployments/standalone.xml':
+    ensure  => present,
+    owner   => wildfly,
+    group   => wildfly,
+    content => template('zanata/standalone.xml.erb'),
   }
 }
