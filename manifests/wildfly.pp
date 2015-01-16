@@ -15,9 +15,8 @@
 # == Class: zanata::wildfly
 #
 class zanata::wildfly(
-  $wildfly_version = '8.2.0',
-  $wildfly_install_source = 'http://download.jboss.org/wildfly/8.2.0.Final/wildfly-8.2.0.Final.tar.gz',
-  $wildfly_install_file = 'wildfly-8.2.0.Final.tar.gz',
+  $wildfly_version = '8.1.0',
+  $wildfly_install_source = 'http://download.jboss.org/wildfly/8.1.0.Final/wildfly-8.1.0.Final.tar.gz',
 ) {
   include wildfly
 
@@ -25,10 +24,13 @@ class zanata::wildfly(
     ensure => present,
   }
 
+  $wildfly_install_file = inline_template('<%= File.basename(@wildfly_install_source) %>')
+
   class { 'wildfly::install':
     version        => $wildfly_version,
     install_source => $wildfly_install_source,
     install_file   => $wildfly_install_file,
+    config         => 'standalone.xml',
     java_home      => '/usr/lib/jvm/java-7-openjdk-amd64/jre/',
     require        => Package['openjdk-7-jre-headless'],
   }
