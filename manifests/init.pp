@@ -32,7 +32,6 @@ class zanata(
   $zanata_default_from_address = '',
   $zanata_storage_dir = '/home/wildfly/zanata',
 
-
 ) {
 
   $zanata_file = inline_template('<%= File.basename(@zanata_url) %>')
