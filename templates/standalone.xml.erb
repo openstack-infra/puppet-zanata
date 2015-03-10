@@ -524,6 +524,13 @@
         <subsystem xmlns="urn:jboss:domain:undertow:1.1">
             <buffer-cache name="default"/>
             <server name="default-server">
+
+<% @zanata_listeners.each do |listener| -%>
+<% if listener == 'https' -%>
+<% @listener_realm = ' security-realm="ApplicationRealm"' -%>
+<% end -%>
+                <<%= listener %>-listener name="default.<%= listener %>" socket-binding="<%= listener %>"<%= @listener_realm %>/>
+<% end -%>
                 <http-listener name="default" socket-binding="http"/>
                 <host name="default-host" alias="localhost">
                     <location name="/" handler="welcome-content"/>
