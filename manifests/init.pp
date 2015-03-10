@@ -35,11 +35,16 @@ class zanata(
   $zanata_openid_provider_url = '',
   $zanata_admin_users = '',
 
+  $zanata_listeners = [],
+
 ) {
 
   $zanata_file = inline_template('<%= File.basename(@zanata_url) %>')
   $zanata_hibernate_file = inline_template('<%= File.basename(@zanata_hibernate_url) %>')
   $zanata_mojarra_file = inline_template('<%= File.basename(@zanata_mojarra_url) %>')
+
+  zanata::validate_listener { $zanata_listeners:
+  }
 
   class { 'zanata::wildfly':
     wildfly_version        => $zanata_wildfly_version,
@@ -143,5 +148,13 @@ class zanata(
                 Exec['unzip_hibernate'],
                 ],
   }
+}
 
+# == Define: zanata::validate_listener
+#
+define zanata::validate_listener ($listener = $name) {
+  $listeners = [ 'https', 'ajp' ]
+  if $listener and !($listener in $listeners) {
+    fail("${listener} is not a valid listener type")
+  }
 }
