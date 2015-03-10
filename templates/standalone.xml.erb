@@ -524,7 +524,13 @@
         <subsystem xmlns="urn:jboss:domain:undertow:1.1">
             <buffer-cache name="default"/>
             <server name="default-server">
+<% if @zanata_listener == 'ajp' -%>
+                <ajp-listener name ="default.ajp" socket-binding="ajp"/>
+<% elsif @zanata_listener == 'https' -%>
+                <https-listener name="default.https" socket-binding="https" security-realm="ApplicationRealm"/>
+<% elsif @zanata_listener == 'http' -%>
                 <http-listener name="default" socket-binding="http"/>
+<% end -%>
                 <host name="default-host" alias="localhost">
                     <location name="/" handler="welcome-content"/>
                     <filter-ref name="server-header"/>

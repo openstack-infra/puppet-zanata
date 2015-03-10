@@ -32,12 +32,19 @@ class zanata(
   $zanata_default_from_address = '',
   $zanata_storage_dir = '/home/wildfly/zanata',
 
+  $zanata_listener = 'http',
 
 ) {
 
   $zanata_file = inline_template('<%= File.basename(@zanata_url) %>')
   $zanata_hibernate_file = inline_template('<%= File.basename(@zanata_hibernate_url) %>')
   $zanata_mojarra_file = inline_template('<%= File.basename(@zanata_mojarra_url) %>')
+
+  $listeners = [ 'http', 'https', 'ajp' ]
+
+  if !($zanata_listener in $listeners) {
+    fail("${zanata_listener} is not a valid listener type")
+  }
 
   class { 'zanata::wildfly':
     wildfly_version        => $zanata_wildfly_version,
@@ -141,5 +148,4 @@ class zanata(
                 Exec['unzip_hibernate'],
                 ],
   }
-
 }
