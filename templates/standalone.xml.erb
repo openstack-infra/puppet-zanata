@@ -413,6 +413,8 @@
         <subsystem xmlns="urn:jboss:domain:undertow:1.1">
             <buffer-cache name="default"/>
             <server name="default-server">
+                <ajp-listener name ="default.ajp" socket-binding="ajp"/>
+		<https-listener name="default.https" socket-binding="https" security-realm="ApplicationRealm"/>
                 <http-listener name="default" socket-binding="http"/>
                 <host name="default-host" alias="localhost">
                     <location name="/" handler="welcome-content"/>

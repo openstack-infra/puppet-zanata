@@ -32,6 +32,14 @@ class zanata(
   $zanata_default_from_address = 'zanata@openstack.org',
   $zanata_storage_dir = '/home/wildfly/zanata',
 
+  $zanata_vhost_name = 'zanata.openstack.org',
+  $zanata_serveradmin = "webmaster@${::fqdn}",
+  $zanata_ssl_cert_file = '/etc/ssl/certs/ssl-cert-snakeoil.pem',
+  $zanata_ssl_key_file = '/etc/ssl/private/ssl-cert-snakeoil.key',
+  $zanata_ssl_chain_file = '',
+  $zanata_ssl_cert_file_contents = '',
+  $zanata_ssl_key_file_contents = '',
+  $zanata_ssl_chain_file_contents = '',
 
 ) {
 
@@ -139,4 +147,17 @@ class zanata(
                 ],
   }
 
+  class { 'zanata::apache':
+    vhost_name              => $zanata_vhost_name,
+    serveradmin             => $zanata_serveradmin,
+    ssl_cert_file           => $zanata_ssl_cert_file,
+    ssl_key_file            => $zanata_ssl_key_file,
+    ssl_chain_file          => $zanata_ssl_chain_file,
+    ssl_cert_file_contents  => $zanata_ssl_cert_file_contents,
+    ssl_key_file_contents   => $zanata_ssl_key_file_contents,
+    ssl_chain_file_contents => $zanata_ssl_chain_file_contents,
+    require                 => [
+                                File['/opt/wildfly/standalone/configuration/standalone.xml'],
+                                ],
+  }
 }
