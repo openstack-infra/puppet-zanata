@@ -32,6 +32,9 @@ class zanata(
   $zanata_default_from_address = '',
   $zanata_storage_dir = '/home/wildfly/zanata',
 
+  $zanata_enable_http = true,
+  $zanata_enable_https = false,
+  $zanata_enable_ajp = false,
 
 ) {
 
@@ -141,5 +144,4 @@ class zanata(
                 Exec['unzip_hibernate'],
                 ],
   }
-
 }
