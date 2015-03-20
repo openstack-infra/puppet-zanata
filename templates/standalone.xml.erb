@@ -163,9 +163,9 @@
                     </pool>
                     <security>
                         <user-name><%= @zanata_db_username %></user-name>
-			<% if @zanata_db_password != '' -%>
+<% if @zanata_db_password != '' -%>
                         <password><%= @zanata_db_password %></password>
-			<% end -%>
+<% end -%>
                     </security>
                     <statement>
                         <track-statements>NOWARN</track-statements>
@@ -413,14 +413,19 @@
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:naming:2.0">
             <bindings>
+<% if @zanata_openid_provider_url == '' -%>
                 <simple name="java:global/zanata/security/auth-policy-names/internal" value="zanata.internal"/>
+<% end -%>
                 <simple name="java:global/zanata/security/auth-policy-names/openid" value="zanata.openid"/>
-                <!--<simple name="java:global/zanata/security/admin-users" value=""/>-->
+<% if @zanata_admin_users != '' -%>
+                <simple name="java:global/zanata/security/admin-users" value="<%= @zanata_admin_users %>"/>
+<% else -%>
                 <simple name="java:global/zanata/security/admin-users" value="admin"/>
+<% end -%>
                 <simple name="java:global/zanata/files/document-storage-directory" value="<%= @zanata_storage_dir %>/files"/>
-		<% if @zanata_default_from_address != '' -%>
+<% if @zanata_default_from_address != '' -%>
                 <simple name="java:global/zanata/email/default-from-address" value="<%= @zanata_default_from_address %>"/>
-		<% end -%>
+<% end -%>
             </bindings>
             <remote-naming/>
         </subsystem>
@@ -445,7 +450,13 @@
                 </security-domain>
                 <security-domain name="zanata.openid">
                     <authentication>
+<% if @zanata_openid_provider_url != '' -%>
+                        <login-module code="org.zanata.security.OpenIdLoginModule" flag="required">
+                            <module-option name="providerURL" value="<%= @zanata_openid_provider_url %>" />
+                        </login-module>
+<% else -%>
                         <login-module code="org.zanata.security.OpenIdLoginModule" flag="required"/>
+<% end -%>
                     </authentication>
                 </security-domain>
                 <security-domain name="zanata.jaas">
