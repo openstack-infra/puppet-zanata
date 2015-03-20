@@ -32,6 +32,7 @@ class zanata(
   $zanata_default_from_address = '',
   $zanata_storage_dir = '/home/wildfly/zanata',
 
+  $zanata_openid_provider_url = '',
 
 ) {
 

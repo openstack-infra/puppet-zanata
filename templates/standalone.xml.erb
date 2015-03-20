@@ -413,7 +413,7 @@
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:naming:2.0">
             <bindings>
-                <simple name="java:global/zanata/security/auth-policy-names/internal" value="zanata.internal"/>
+                <!--<simple name="java:global/zanata/security/auth-policy-names/internal" value="zanata.internal"/>-->
                 <simple name="java:global/zanata/security/auth-policy-names/openid" value="zanata.openid"/>
                 <!--<simple name="java:global/zanata/security/admin-users" value=""/>-->
                 <simple name="java:global/zanata/security/admin-users" value="admin"/>
@@ -445,7 +445,13 @@
                 </security-domain>
                 <security-domain name="zanata.openid">
                     <authentication>
+<% if @zanata_openid_provider_url != '' -%>
+                        <login-module code="org.zanata.security.OpenIdLoginModule" flag="required">
+                            <module-option name="providerURL" value="<%= @zanata_openid_provider_url %>" />
+                        </login-module>
+<% else -%>
                         <login-module code="org.zanata.security.OpenIdLoginModule" flag="required"/>
+<% end -%>
                     </authentication>
                 </security-domain>
                 <security-domain name="zanata.jaas">
