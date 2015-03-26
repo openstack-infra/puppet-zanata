@@ -37,6 +37,13 @@ class zanata(
 
   $zanata_listeners = [],
 
+  $zanata_smtp_host = '',
+  $zanata_smtp_port = '',
+  $zanata_smtp_username = '',
+  $zanata_smtp_password = '',
+  $zanata_smtp_tls = '',
+  $zanata_smtp_ssl = '',
+
 ) {
 
   $zanata_file = inline_template('<%= File.basename(@zanata_url) %>')
