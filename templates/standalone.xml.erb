@@ -418,9 +418,27 @@
                 <!--<simple name="java:global/zanata/security/admin-users" value=""/>-->
                 <simple name="java:global/zanata/security/admin-users" value="admin"/>
                 <simple name="java:global/zanata/files/document-storage-directory" value="<%= @zanata_storage_dir %>/files"/>
-		<% if @zanata_default_from_address != '' -%>
+<% if @zanata_default_from_address != '' -%>
                 <simple name="java:global/zanata/email/default-from-address" value="<%= @zanata_default_from_address %>"/>
-		<% end -%>
+<% end -%>
+<% if @zanata_smtp_host != '' -%>
+                <simple name="java:global/zanata/smtp/host" value="<%= @zanata_smtp_host %>" />
+<% end -%>
+<% if @zanata_smtp_port != '' -%>
+                <simple name="java:global/zanata/smtp/port" value="<%= @zanata_smtp_port %>" />
+<% end -%>
+<% if @zanata_smtp_username != '' -%>
+                <simple name="java:global/zanata/smtp/username" value="<%= @zanata_smtp_username %>" />
+<% end -%>
+<% if @zanata_smtp_password != '' -%>
+                <simple name="java:global/zanata/smtp/password" value="<%= @zanata_smtp_password %>" />
+<% end -%>
+<% if @zanata_smtp_tls != '' -%>
+                <simple name="java:global/zanata/smtp/tls" value="<%= @zanata_smtp_tls %>" />
+<% end -%>
+<% if @zanata_smtp_ssl != '' -%>
+                <simple name="java:global/zanata/smtp/ssl" value="<%= @zanata_smtp_ssl %>" />
+<% end -%>
             </bindings>
             <remote-naming/>
         </subsystem>
