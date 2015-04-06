@@ -18,7 +18,14 @@ class zanata::client(
   $version = '3.4.2',
   $user = 'jenkins',
   $group = 'jenkins',
+  $server = '',
+  $server_url = '',
+  $server_user = '',
+  $server_api_key = '',
+  $homedir = '/home/jenkins/',
 ) {
+
+  $serverid = regsubst($server, '\.', '_', 'G')
 
   file { '/opt/zanata':
     ensure  => directory,
@@ -68,5 +75,13 @@ class zanata::client(
 
   package { 'openjdk-7-jre-headless':
     ensure => present,
+  }
+
+  file { "${homedir}/.config/zanata.ini": # XXX needs to be in homedir
+    ensure  => present,
+    owner   => $user,
+    group   => $group,
+    mode    => '0600',
+    content => template('zanata/zanata.ini.erb'),
   }
 }
