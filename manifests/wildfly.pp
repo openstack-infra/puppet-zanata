@@ -16,20 +16,16 @@
 #
 class zanata::wildfly(
   $wildfly_version = '8.1.0',
-  $wildfly_install_source = 'https://download.jboss.org/wildfly/8.1.0.Final/wildfly-8.1.0.Final.tar.gz',
+  $wildfly_install_source = 'https://repo1.maven.org/maven2/org/wildfly/wildfly-dist/8.1.0.Final/wildfly-dist-8.1.0.Final.tar.gz',
 ) {
-  include wildfly
 
   package { 'openjdk-7-jre-headless':
     ensure => present,
   }
 
-  $wildfly_install_file = inline_template('<%= File.basename(@wildfly_install_source) %>')
-
-  class { 'wildfly::install':
+  class { '::wildfly':
     version        => $wildfly_version,
     install_source => $wildfly_install_source,
-    install_file   => $wildfly_install_file,
     config         => 'standalone.xml',
     java_home      => '/usr/lib/jvm/java-7-openjdk-amd64/jre/',
     require        => Package['openjdk-7-jre-headless'],
