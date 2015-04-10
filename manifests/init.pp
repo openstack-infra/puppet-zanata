@@ -142,7 +142,6 @@ class zanata(
     content => template('zanata/standalone.xml.erb'),
     require => [
                 Class['zanata::wildfly'],
-                Mysql::Db[$zanata_db_name],
                 File['/opt/wildfly/standalone/deployments/ROOT.war'],
                 Exec['unzip_mojarra'],
                 Exec['unzip_hibernate'],
