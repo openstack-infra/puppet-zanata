@@ -1,0 +1,9 @@
+Code-Review+2: James E. Blair <corvus@inaugust.com>
+Workflow+1: James E. Blair <corvus@inaugust.com>
+Verified+2: Jenkins
+Code-Review+2: Clark Boylan <cboylan@sapwetik.org>
+Submitted-by: Jenkins
+Submitted-at: Thu, 16 Apr 2015 23:19:46 +0000
+Reviewed-on: https://review.openstack.org/168167
+Project: openstack-infra/puppet-zanata
+Branch: refs/heads/master
