@@ -29,7 +29,7 @@ class zanata(
   $zanata_mojarra_url = 'https://sourceforge.net/projects/zanata/files/wildfly/wildfly-8.1.0.Final-module-mojarra-2.1.28.zip',
   $zanata_url = 'https://sourceforge.net/projects/zanata/files/webapp/zanata-war-3.6.0.war',
 
-  $zanata_default_from_address = '',
+  $zanata_default_from_address,
   $zanata_storage_dir = '/home/wildfly/zanata',
 
   $zanata_openid_provider_url = '',

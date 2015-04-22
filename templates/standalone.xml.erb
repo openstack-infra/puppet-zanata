@@ -423,9 +423,7 @@
                 <simple name="java:global/zanata/security/admin-users" value="admin"/>
 <% end -%>
                 <simple name="java:global/zanata/files/document-storage-directory" value="<%= @zanata_storage_dir %>/files"/>
-<% if @zanata_default_from_address != '' -%>
                 <simple name="java:global/zanata/email/default-from-address" value="<%= @zanata_default_from_address %>"/>
-<% end -%>
 <% if @zanata_smtp_host != '' -%>
                 <simple name="java:global/zanata/smtp/host" value="<%= @zanata_smtp_host %>" />
 <% end -%>
