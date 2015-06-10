@@ -142,7 +142,11 @@ class zanata(
                 ],
   }
 
-  file { '/opt/wildfly/standalone/configuration/standalone.xml':
+  # Wildly modifies the standalone.xml when it launches, so we can't depend on
+  # that md5sum not changing. This is not the file we run from, but instead
+  # is created to identify whether changes have been made to the template and
+  # runs the required jobs if so.
+  file { '/opt/wildfly/standalone/configuration/standalone.xml.template':
     ensure  => present,
     notify  => Service['wildfly'],
     owner   => wildfly,
@@ -153,6 +157,17 @@ class zanata(
                 File['/opt/wildfly/standalone/deployments/ROOT.war'],
                 Exec['unzip_mojarra'],
                 Exec['unzip_hibernate'],
+                ],
+  }
+
+   # This is the file we run wildfly from
+   file { '/opt/wildfly/standalone/configuration/standalone.xml':
+    ensure  => present,
+    owner   => wildfly,
+    group   => wildfly,
+    content => template('zanata/standalone.xml.erb'),
+    require => [
+                File [ '/opt/wildfly/standalone/configuration/standalone.xml.template'],
                 ],
   }
 }
