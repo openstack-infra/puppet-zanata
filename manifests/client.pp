@@ -25,7 +25,7 @@ class zanata::client(
   $homedir = '/home/jenkins/',
 ) {
 
-  $serverid = regsubst($server, '\.', '_', 'G')
+  $server_id = parse_server_id($server_url)
 
   file { '/opt/zanata':
     ensure  => directory,
@@ -77,7 +77,7 @@ class zanata::client(
     ensure => present,
   }
 
-  file { "${homedir}/.config/zanata.ini": # XXX needs to be in homedir
+  file { "${homedir}/.config/zanata.ini":
     ensure  => present,
     owner   => $user,
     group   => $group,
