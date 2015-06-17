@@ -99,6 +99,7 @@ class zanata(
     timeout => 600,
     require => [
       Package['wget'],
+    notify  => Exec['unzip_hibernate'],
     ]
   }
 
@@ -107,9 +108,10 @@ class zanata(
     cwd     => '/home/wildfly',
     user    => 'wildfly',
     require => [
-      Exec['download_hibernate'],
       Package['unzip'],
+      File["/home/wildfly/${zanata_hibernate_file}"],
     ]
+    refreshonly => true,
   }
 
   exec { 'download_mojarra':
@@ -120,6 +122,7 @@ class zanata(
     timeout => 600,
     require => [
       Package['wget'],
+    notify  => Exec['unzip_mojarra'],
     ]
   }
 
@@ -128,9 +131,10 @@ class zanata(
     cwd     => '/home/wildfly',
     user    => 'wildfly',
     require => [
-      Exec['download_mojarra'],
       Package['unzip'],
+      File["/home/wildfly/${zanata_mojarra_file}"],
     ]
+    refreshonly => true,
   }
 
   file { '/opt/wildfly/standalone/deployments/mysql-connector-java.jar':
@@ -151,8 +155,6 @@ class zanata(
     require => [
                 Class['zanata::wildfly'],
                 File['/opt/wildfly/standalone/deployments/ROOT.war'],
-                Exec['unzip_mojarra'],
-                Exec['unzip_hibernate'],
                 ],
   }
 }
