@@ -15,7 +15,7 @@
 # == Class: zanata::client
 #
 class zanata::client(
-  $version = '3.6.0',
+  $version = '3.7.1',
   $user = 'jenkins',
   $group = 'jenkins',
   $server = '',
