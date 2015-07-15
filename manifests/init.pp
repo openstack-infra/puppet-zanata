@@ -47,6 +47,7 @@ class zanata(
 ) {
 
   $zanata_file = inline_template('<%= File.basename(@zanata_url) %>')
+  $wildfly_file = inline_template('<%= File.basename(@zanata_wildfly_install_url) %>')
   $zanata_hibernate_file = inline_template('<%= File.basename(@zanata_hibernate_url) %>')
   $zanata_mojarra_file = inline_template('<%= File.basename(@zanata_mojarra_url) %>')
 
@@ -88,6 +89,7 @@ class zanata(
     owner   => 'wildfly',
     require => [
       Exec['download_zanata'],
+      Exec["tar ${wildfly_file} in /var/tmp"],
     ]
   }
 
