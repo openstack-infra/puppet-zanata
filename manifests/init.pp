@@ -84,7 +84,7 @@ class zanata(
 
   file { '/opt/wildfly/standalone/deployments/ROOT.war':
     ensure  => present,
-    source  => "/home/wildfly/${zanata_file}",
+    source  => "file:///home/wildfly/${zanata_file}",
     owner   => 'wildfly',
     require => [
       Exec['download_zanata'],
