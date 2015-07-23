@@ -26,22 +26,22 @@ class zanata::apache (
   $ssl_chain_file_contents = '', # If left empty puppet will not create file.
 ) {
 
-  include ::apache
-  include ::apache::ssl
+  include ::httpd
+  include ::httpd::ssl
 
-  a2mod { 'proxy':
+  httpd_mod { 'proxy':
     ensure => present,
   }
 
-  a2mod { 'proxy_http':
+  httpd_mod { 'proxy_http':
     ensure => present,
   }
 
-  a2mod { 'proxy_ajp':
+  httpd_mod { 'proxy_ajp':
     ensure => present,
   }
 
-  apache::vhost { $vhost_name:
+  ::httpd::vhost { $vhost_name:
     port        => 443,
     docroot     => 'MEANINGLESS ARGUMENT',
     priority    => '50',
@@ -56,7 +56,7 @@ class zanata::apache (
       group   => 'root',
       mode    => '0640',
       content => $ssl_cert_file_contents,
-      before  => Apache::Vhost[$vhost_name],
+      before  => Httpd::Vhost[$vhost_name],
     }
   }
 
@@ -66,7 +66,7 @@ class zanata::apache (
       group   => 'root',
       mode    => '0640',
       content => $ssl_key_file_contents,
-      before  => Apache::Vhost[$vhost_name],
+      before  => Httpd::Vhost[$vhost_name],
     }
   }
 
@@ -76,7 +76,7 @@ class zanata::apache (
       group   => 'root',
       mode    => '0640',
       content => $ssl_chain_file_contents,
-      before  => Apache::Vhost[$vhost_name],
+      before  => Httpd::Vhost[$vhost_name],
     }
   }
 
