@@ -26,6 +26,7 @@ class zanata::client(
 ) {
 
   $server_id = parse_server_id($server_url)
+  $server_name = regsubst($server_id, '_', '.', 'G')
 
   file { '/opt/zanata':
     ensure  => directory,
@@ -48,6 +49,36 @@ class zanata::client(
     group   => $group,
     mode    => '0644',
     require => Exec['get_zanata_client_dist_tarball'],
+  }
+
+  exec { 'get_zanata_server_certificate':
+    command => "openssl s_client -connect ${server_name}:443 -prexit 2>/dev/null | openssl x509 -in /dev/stdin -out /opt/zanata/${server_id}.crt",
+    path    => '/bin:/usr/bin',
+    creates => "/opt/zanata/${server_id}.crt",
+    require => File['/opt/zanata'],
+  }
+
+  file { "/opt/zanata/${server_id}.crt":
+    ensure  => present,
+    owner   => $user,
+    group   => $group,
+    mode    => '0644',
+    require => Exec['get_zanata_server_certificate'],
+  }
+
+  java_ks { 'zanata_server:keystore':
+    ensure       => latest,
+    certificate  => "/opt/zanata/${server_id}.crt",
+    target       => '/etc/ssl/certs/java/cacerts',
+    password     => 'changeit',
+    require      => File["/opt/zanata/${server_id}.crt"],
+  }
+
+  file { '/etc/ssl/certs/java/cacerts':
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    require => Java_ks['zanata_server:keystore']
   }
 
   exec { 'unpack_zanata_client_dist_tarball':
