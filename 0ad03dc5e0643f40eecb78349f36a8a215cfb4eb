@@ -1,0 +1,9 @@
+Verified+2: Jenkins
+Code-Review+2: yolanda.robla <info@ysoft.biz>
+Code-Review+2: Elizabeth K. Joseph <lyz@princessleia.com>
+Workflow+1: Elizabeth K. Joseph <lyz@princessleia.com>
+Submitted-by: Jenkins
+Submitted-at: Tue, 04 Aug 2015 16:23:39 +0000
+Reviewed-on: https://review.openstack.org/201943
+Project: openstack-infra/puppet-zanata
+Branch: refs/heads/master
