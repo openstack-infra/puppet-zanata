@@ -67,11 +67,11 @@ class zanata::client(
   }
 
   java_ks { 'zanata_server:keystore':
-    ensure       => latest,
-    certificate  => "/opt/zanata/${server_id}.crt",
-    target       => '/etc/ssl/certs/java/cacerts',
-    password     => 'changeit',
-    require      => File["/opt/zanata/${server_id}.crt"],
+    ensure      => latest,
+    certificate => "/opt/zanata/${server_id}.crt",
+    target      => '/etc/ssl/certs/java/cacerts',
+    password    => 'changeit',
+    require     => File["/opt/zanata/${server_id}.crt"],
   }
 
   file { '/etc/ssl/certs/java/cacerts':

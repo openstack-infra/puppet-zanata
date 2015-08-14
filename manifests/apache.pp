@@ -42,12 +42,12 @@ class zanata::apache (
   }
 
   ::httpd::vhost { $vhost_name:
-    port        => 443,
-    docroot     => 'MEANINGLESS ARGUMENT',
-    priority    => '50',
-    template    => 'zanata/zanata.vhost.erb',
-    ssl         => true,
-    subscribe   => File['/opt/wildfly/standalone/configuration/standalone.xml'],
+    port      => 443,
+    docroot   => 'MEANINGLESS ARGUMENT',
+    priority  => '50',
+    template  => 'zanata/zanata.vhost.erb',
+    ssl       => true,
+    subscribe => File['/opt/wildfly/standalone/configuration/standalone.xml'],
   }
 
   if $ssl_cert_file_contents != '' {

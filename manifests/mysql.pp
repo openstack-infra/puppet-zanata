@@ -25,7 +25,7 @@ class zanata::mysql(
 
 ) {
 
-  class { 'mysql::server':
+  class { '::mysql::server':
     config_hash => {
       'root_password'  => $mysql_root_password,
       'default_engine' => 'InnoDB',
@@ -34,7 +34,7 @@ class zanata::mysql(
     }
   }
 
-  include mysql::server::account_security
+  include ::mysql::server::account_security
 
   mysql::db { $db_name:
     user     => $db_username,

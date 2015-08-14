@@ -54,7 +54,7 @@ class zanata(
   zanata::validate_listener { $zanata_listeners:
   }
 
-  class { 'zanata::wildfly':
+  class { '::zanata::wildfly':
     wildfly_version        => $zanata_wildfly_version,
     wildfly_install_source => $zanata_wildfly_install_url,
   }
