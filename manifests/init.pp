@@ -88,8 +88,8 @@ class zanata(
     source  => "/home/wildfly/${zanata_file}",
     owner   => 'wildfly',
     require => [
+      Class['wildfly::install'],
       Exec['download_zanata'],
-      Exec["tar ${wildfly_file} in /var/tmp"],
     ]
   }
 
