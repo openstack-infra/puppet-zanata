@@ -22,8 +22,8 @@ class zanata(
   $zanata_db_username = 'zanata',
   $zanata_db_password,
 
-  $zanata_wildfly_version = '8.1.0',
-  $zanata_wildfly_install_url = 'https://repo1.maven.org/maven2/org/wildfly/wildfly-dist/8.1.0.Final/wildfly-dist-8.1.0.Final.tar.gz',
+  $zanata_wildfly_version = '9.0.1',
+  $zanata_wildfly_install_url = 'https://repo1.maven.org/maven2/org/wildfly/wildfly-dist/9.0.1.Final/wildfly-dist-9.0.1.Final.tar.gz',
 
   $zanata_hibernate_url = 'https://sourceforge.net/projects/zanata/files/wildfly/wildfly-8.1.0.Final-module-hibernate-main-4.2.15.Final.zip',
   $zanata_mojarra_url = 'https://sourceforge.net/projects/zanata/files/wildfly/wildfly-8.1.0.Final-module-mojarra-2.1.28.zip',
