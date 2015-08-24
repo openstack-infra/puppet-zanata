@@ -72,6 +72,8 @@ class zanata(
     group  => 'wildfly'
   }
 
+  include 'archive'
+
   exec { 'download_zanata':
     command => "/usr/bin/wget ${zanata_url}",
     cwd     => '/home/wildfly',
@@ -93,46 +95,20 @@ class zanata(
     ]
   }
 
-  exec { 'download_hibernate':
-    command => "/usr/bin/wget ${zanata_hibernate_url}",
-    cwd     => '/home/wildfly',
-    creates => "/home/wildfly/${zanata_hibernate_file}",
-    user    => 'wildfly',
-    timeout => 600,
-    require => [
-      Package['wget'],
-    ]
+  archive { "/home/wildfly/${zanata_hibernate_file}":
+    user         => 'wildfly',
+    source       => $zanata_hibernate_url,
+    extract      => true,
+    extract_path => '/opt/wildfly/',
+    cleanup      => true,
   }
 
-  exec { 'unzip_hibernate':
-    command => "/usr/bin/unzip -o ${zanata_hibernate_file} -d /opt/wildfly/",
-    cwd     => '/home/wildfly',
-    user    => 'wildfly',
-    require => [
-      Exec['download_hibernate'],
-      Package['unzip'],
-    ]
-  }
-
-  exec { 'download_mojarra':
-    command => "/usr/bin/wget ${zanata_mojarra_url}",
-    cwd     => '/home/wildfly',
-    creates => "/home/wildfly/${zanata_mojarra_file}",
-    user    => 'wildfly',
-    timeout => 600,
-    require => [
-      Package['wget'],
-    ]
-  }
-
-  exec { 'unzip_mojarra':
-    command => "/usr/bin/unzip -o ${zanata_mojarra_file} -d /opt/wildfly/",
-    cwd     => '/home/wildfly',
-    user    => 'wildfly',
-    require => [
-      Exec['download_mojarra'],
-      Package['unzip'],
-    ]
+  archive { "/home/wildfly/${zanata_mojarra_file}":
+    user         => 'wildfly',
+    source       => $zanata_mojarra_url,
+    extract      => true,
+    extract_path => '/opt/wildfly/',
+    cleanup      => true,
   }
 
   file { '/opt/wildfly/standalone/deployments/mysql-connector-java.jar':
@@ -153,8 +129,6 @@ class zanata(
     require => [
                 Class['zanata::wildfly'],
                 File['/opt/wildfly/standalone/deployments/ROOT.war'],
-                Exec['unzip_mojarra'],
-                Exec['unzip_hibernate'],
                 ],
   }
 }
