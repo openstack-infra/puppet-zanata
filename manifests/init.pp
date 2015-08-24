@@ -28,6 +28,7 @@ class zanata(
   $zanata_hibernate_url = 'https://sourceforge.net/projects/zanata/files/wildfly/wildfly-8.1.0.Final-module-hibernate-main-4.2.15.Final.zip',
   $zanata_mojarra_url = 'https://sourceforge.net/projects/zanata/files/wildfly/wildfly-8.1.0.Final-module-mojarra-2.1.28.zip',
   $zanata_url = 'https://sourceforge.net/projects/zanata/files/webapp/zanata-war-3.7.1.war',
+  $zanata_checksum = 'b741fac8cf7d11c9b15189e6899051eb',
 
   $zanata_default_from_address,
   $zanata_storage_dir = '/home/wildfly/zanata',
@@ -72,67 +73,35 @@ class zanata(
     group  => 'wildfly'
   }
 
-  exec { 'download_zanata':
-    command => "/usr/bin/wget ${zanata_url}",
-    cwd     => '/home/wildfly',
-    creates => "/home/wildfly/${zanata_file}",
-    user    => 'wildfly',
-    timeout => 600,
-    require => [
-      Package['wget'],
-    ]
-  }
+  include '::archive'
 
-  file { '/opt/wildfly/standalone/deployments/ROOT.war':
-    ensure  => present,
-    source  => "/home/wildfly/${zanata_file}",
-    owner   => 'wildfly',
-    require => [
+  archive { '/opt/wildfly/standalone/deployments/ROOT.war':
+    ensure        => present,
+    user          => 'wildfly',
+    source        => $zanata_url,
+    checksum_type => 'md5',
+    checksum      => $zanata_checksum,
+    require       => [
       Class['wildfly::install'],
-      Exec['download_zanata'],
     ]
   }
 
-  exec { 'download_hibernate':
-    command => "/usr/bin/wget ${zanata_hibernate_url}",
-    cwd     => '/home/wildfly',
-    creates => "/home/wildfly/${zanata_hibernate_file}",
-    user    => 'wildfly',
-    timeout => 600,
-    require => [
-      Package['wget'],
-    ]
+  archive { "/home/wildfly/${zanata_hibernate_file}":
+    ensure       => present,
+    user         => 'wildfly',
+    source       => $zanata_hibernate_url,
+    extract      => true,
+    extract_path => '/opt/wildfly/',
+    require      => Package['unzip'],
   }
 
-  exec { 'unzip_hibernate':
-    command => "/usr/bin/unzip -o ${zanata_hibernate_file} -d /opt/wildfly/",
-    cwd     => '/home/wildfly',
-    user    => 'wildfly',
-    require => [
-      Exec['download_hibernate'],
-      Package['unzip'],
-    ]
-  }
-
-  exec { 'download_mojarra':
-    command => "/usr/bin/wget ${zanata_mojarra_url}",
-    cwd     => '/home/wildfly',
-    creates => "/home/wildfly/${zanata_mojarra_file}",
-    user    => 'wildfly',
-    timeout => 600,
-    require => [
-      Package['wget'],
-    ]
-  }
-
-  exec { 'unzip_mojarra':
-    command => "/usr/bin/unzip -o ${zanata_mojarra_file} -d /opt/wildfly/",
-    cwd     => '/home/wildfly',
-    user    => 'wildfly',
-    require => [
-      Exec['download_mojarra'],
-      Package['unzip'],
-    ]
+  archive { "/home/wildfly/${zanata_mojarra_file}":
+    ensure       => present,
+    user         => 'wildfly',
+    source       => $zanata_mojarra_url,
+    extract      => true,
+    extract_path => '/opt/wildfly/',
+    require      => Package['unzip'],
   }
 
   file { '/opt/wildfly/standalone/deployments/mysql-connector-java.jar':
@@ -153,8 +122,6 @@ class zanata(
     require => [
                 Class['zanata::wildfly'],
                 File['/opt/wildfly/standalone/deployments/ROOT.war'],
-                Exec['unzip_mojarra'],
-                Exec['unzip_hibernate'],
                 ],
   }
 }
