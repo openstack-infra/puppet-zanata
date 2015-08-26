@@ -36,19 +36,14 @@ class zanata::client(
     require => User[$user],
   }
 
-  exec { 'get_zanata_client_dist_tarball':
-    command => "wget https://search.maven.org/remotecontent?filepath=org/zanata/zanata-cli/${version}/zanata-cli-${version}-dist.tar.gz -O /opt/zanata/zanata-cli-${version}-dist.tar.gz",
-    path    => '/bin:/usr/bin',
-    creates => "/opt/zanata/zanata-cli-${version}-dist.tar.gz",
-    require => File['/opt/zanata'],
-  }
-
-  file { "/opt/zanata/zanata-cli-${version}-dist.tar.gz":
-    ensure  => present,
-    owner   => $user,
-    group   => $group,
-    mode    => '0644',
-    require => Exec['get_zanata_client_dist_tarball'],
+  archive { "/opt/zanata/zanata-cli-${version}-dist.tar.gz":
+    ensure       => present,
+    user         => $user,
+    group        => $group,
+    source       => "https://search.maven.org/remotecontent?filepath=org/zanata/zanata-cli/${version}/zanata-cli-${version}-dist.tar.gz",
+    extract      => true,
+    extract_path => '/opt/zanata/',
+    cleanup      => true,
   }
 
   exec { 'get_zanata_server_certificate':
@@ -81,21 +76,12 @@ class zanata::client(
     require => Java_ks['zanata_server:keystore']
   }
 
-  exec { 'unpack_zanata_client_dist_tarball':
-    command => "tar zxf zanata-cli-${version}-dist.tar.gz",
-    path    => '/bin:/usr/bin',
-    user    => $user,
-    cwd     => '/opt/zanata',
-    creates => "/opt/zanata/zanata-cli-${version}/bin/zanata-cli",
-    require => Exec['get_zanata_client_dist_tarball'],
-  }
-
   file { "/opt/zanata/zanata-cli-${version}/bin/zanata-cli":
     ensure  => present,
     owner   => $user,
     group   => $group,
     mode    => '0755',
-    require => Exec['unpack_zanata_client_dist_tarball'],
+    require => Archive["/opt/zanata/zanata-cli-${version}-dist.tar.gz"],
   }
 
   file { '/usr/local/bin/zanata-cli':
