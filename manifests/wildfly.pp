@@ -28,7 +28,7 @@ class zanata::wildfly(
     install_source => $wildfly_install_source,
     config         => 'standalone.xml',
     java_home      => '/usr/lib/jvm/java-7-openjdk-amd64/jre/',
-    java_xmx       => '2048m',
+    java_xmx       => '4096m',
     require        => Package['openjdk-7-jre-headless'],
   }
 }
