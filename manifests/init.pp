@@ -27,8 +27,8 @@ class zanata(
 
   $zanata_hibernate_url = 'https://sourceforge.net/projects/zanata/files/wildfly/wildfly-8.1.0.Final-module-hibernate-main-4.2.15.Final.zip',
   $zanata_mojarra_url = 'https://sourceforge.net/projects/zanata/files/wildfly/wildfly-8.1.0.Final-module-mojarra-2.1.28.zip',
-  $zanata_url = 'https://sourceforge.net/projects/zanata/files/webapp/zanata-war-3.7.1.war',
-  $zanata_checksum = 'b741fac8cf7d11c9b15189e6899051eb',
+  $zanata_url = 'https://sourceforge.net/projects/zanata/files/webapp/zanata-war-3.7.2.war',
+  $zanata_checksum = 'daec042c4f14cdd39338f2111de79a13',
 
   $zanata_default_from_address,
   $zanata_storage_dir = '/home/wildfly/zanata',
