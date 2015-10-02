@@ -27,8 +27,8 @@ class zanata(
 
   $zanata_hibernate_url = 'https://sourceforge.net/projects/zanata/files/wildfly/wildfly-8.1.0.Final-module-hibernate-main-4.2.15.Final.zip',
   $zanata_mojarra_url = 'https://sourceforge.net/projects/zanata/files/wildfly/wildfly-8.1.0.Final-module-mojarra-2.1.28.zip',
-  $zanata_url = 'https://sourceforge.net/projects/zanata/files/webapp/zanata-war-3.7.1.war',
-  $zanata_checksum = 'b741fac8cf7d11c9b15189e6899051eb',
+  $zanata_url = 'https://sourceforge.net/projects/zanata/files/webapp/zanata-war-3.7.2.war',
+  $zanata_checksum = 'eb23a2afe279f486b67bbc21aee7591a2c4d9f1f',
 
   $zanata_default_from_address,
   $zanata_storage_dir = '/home/wildfly/zanata',
@@ -79,7 +79,7 @@ class zanata(
     ensure        => present,
     user          => 'wildfly',
     source        => $zanata_url,
-    checksum_type => 'md5',
+    checksum_type => 'sha1',
     checksum      => $zanata_checksum,
     require       => [
       Class['wildfly::install'],
