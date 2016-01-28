@@ -26,12 +26,14 @@ class zanata::mysql(
 ) {
 
   class { '::mysql::server':
-    config_hash => {
-      'root_password'  => $mysql_root_password,
-      'default_engine' => 'InnoDB',
-      'bind_address'   => $mysql_bind_address,
-      'port'           => $mysql_port,
-    }
+    root_password    => $mysql_root_password,
+    override_options => {
+      'mysqld' => {
+        'default-storage-engine' => 'InnoDB',
+        'bind-address'           => $mysql_bind_address,
+        'port'                   => $mysql_port,
+      }
+    },
   }
 
   include ::mysql::server::account_security
