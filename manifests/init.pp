@@ -18,33 +18,27 @@
 class zanata(
   $zanata_default_from_address,
   $zanata_db_password,
-  $mysql_host = 'localhost',
-  $mysql_port = '3306',
-  $zanata_main_version = 3,
-  $zanata_db_name = 'zanata',
-  $zanata_db_username = 'zanata',
-
-  $zanata_wildfly_version = '10.1.0',
-  $zanata_wildfly_install_url = 'https://repo1.maven.org/maven2/org/wildfly/wildfly-dist/10.1.0.Final/wildfly-dist-10.1.0.Final.tar.gz',
-
-  $zanata_url = 'https://github.com/zanata/zanata-server/releases/download/server-3.9.6/zanata-3.9.6-wildfly.zip',
+  $mysql_host                 = 'localhost',
+  $mysql_port                 = '3306',
+  $zanata_admin_users         = '',
   # newer repo,e.g. https://github.com/zanata/zanata-platform/releases/download/platform-4.2.1/zanata-4.2.1-wildfly.zip
   # This should be a sha1 of whatever file is hosted at the url above.
-  $zanata_checksum = 'cb7a477f46a118a337b59b9f4004ef7e6c77a1a8',
-
-  $zanata_storage_dir = '/home/wildfly/zanata',
-
+  $zanata_checksum            = 'cb7a477f46a118a337b59b9f4004ef7e6c77a1a8',
+  $zanata_db_name             = 'zanata',
+  $zanata_db_username         = 'zanata',
+  $zanata_listeners           = [],
+  $zanata_main_version        = 3,
   $zanata_openid_provider_url = '',
-  $zanata_admin_users = '',
-
-  $zanata_listeners = [],
-
-  $zanata_smtp_host = '',
-  $zanata_smtp_port = '',
-  $zanata_smtp_username = '',
-  $zanata_smtp_password = '',
-  $zanata_smtp_tls = '',
-  $zanata_smtp_ssl = '',
+  $zanata_smtp_host           = '',
+  $zanata_smtp_password       = '',
+  $zanata_smtp_port           = '',
+  $zanata_smtp_ssl            = '',
+  $zanata_smtp_tls            = '',
+  $zanata_smtp_username       = '',
+  $zanata_storage_dir         = '/home/wildfly/zanata',
+  $zanata_url                 = 'https://github.com/zanata/zanata-server/releases/download/server-3.9.6/zanata-3.9.6-wildfly.zip',
+  $zanata_wildfly_version     = '10.1.0',
+  $zanata_wildfly_install_url = 'https://repo1.maven.org/maven2/org/wildfly/wildfly-dist/10.1.0.Final/wildfly-dist-10.1.0.Final.tar.gz',
 ) {
   zanata::validate_listener { $zanata_listeners: }
 
