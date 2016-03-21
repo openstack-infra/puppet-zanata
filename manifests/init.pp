@@ -16,34 +16,28 @@
 #
 
 class zanata(
-  $mysql_host = 'localhost',
-  $mysql_port = '3306',
-  $zanata_db_name = 'zanata',
-  $zanata_db_username = 'zanata',
   $zanata_db_password,
-
-  $zanata_wildfly_version = '9.0.1',
-  $zanata_wildfly_install_url = 'https://repo1.maven.org/maven2/org/wildfly/wildfly-dist/9.0.1.Final/wildfly-dist-9.0.1.Final.tar.gz',
-
-  $zanata_hibernate_url = 'https://sourceforge.net/projects/zanata/files/wildfly/wildfly-8.1.0.Final-module-hibernate-main-4.2.15.Final.zip',
-  $zanata_mojarra_url = 'https://sourceforge.net/projects/zanata/files/wildfly/wildfly-8.1.0.Final-module-mojarra-2.1.28.zip',
-  $zanata_url = 'https://sourceforge.net/projects/zanata/files/webapp/zanata-war-3.7.3.war',
-  $zanata_checksum = '59f1ac35cce46ba4e46b06a239cd7ab4e10b5528',
-
   $zanata_default_from_address,
-  $zanata_storage_dir = '/home/wildfly/zanata',
-
+  $mysql_host                 = 'localhost',
+  $mysql_port                 = '3306',
+  $zanata_admin_users         = '',
+  $zanata_checksum            = '59f1ac35cce46ba4e46b06a239cd7ab4e10b5528',
+  $zanata_db_name             = 'zanata',
+  $zanata_db_username         = 'zanata',
+  $zanata_hibernate_url       = 'https://sourceforge.net/projects/zanata/files/wildfly/wildfly-8.1.0.Final-module-hibernate-main-4.2.15.Final.zip',
+  $zanata_listeners           = [],
+  $zanata_mojarra_url         = 'https://sourceforge.net/projects/zanata/files/wildfly/wildfly-8.1.0.Final-module-mojarra-2.1.28.zip',
   $zanata_openid_provider_url = '',
-  $zanata_admin_users = '',
-
-  $zanata_listeners = [],
-
-  $zanata_smtp_host = '',
-  $zanata_smtp_port = '',
-  $zanata_smtp_username = '',
-  $zanata_smtp_password = '',
-  $zanata_smtp_tls = '',
-  $zanata_smtp_ssl = '',
+  $zanata_smtp_host           = '',
+  $zanata_smtp_password       = '',
+  $zanata_smtp_port           = '',
+  $zanata_smtp_ssl            = '',
+  $zanata_smtp_tls            = '',
+  $zanata_smtp_username       = '',
+  $zanata_storage_dir         = '/home/wildfly/zanata',
+  $zanata_url                 = 'https://sourceforge.net/projects/zanata/files/webapp/zanata-war-3.7.3.war',
+  $zanata_wildfly_version     = '9.0.1',
+  $zanata_wildfly_install_url = 'https://repo1.maven.org/maven2/org/wildfly/wildfly-dist/9.0.1.Final/wildfly-dist-9.0.1.Final.tar.gz',
 
 ) {
 

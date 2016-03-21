@@ -15,14 +15,14 @@
 # == Class: zanata::client
 #
 class zanata::client(
-  $version = '3.8.1',
-  $user = 'jenkins',
-  $group = 'jenkins',
-  $server = '',
-  $server_url = '',
-  $server_user = '',
+  $group          = 'jenkins',
+  $homedir        = '/home/jenkins/',
+  $server         = '',
   $server_api_key = '',
-  $homedir = '/home/jenkins/',
+  $server_url     = '',
+  $server_user    = '',
+  $user           = 'jenkins',
+  $version        = '3.8.1',
 ) {
 
   $server_id = parse_server_id($server_url)
