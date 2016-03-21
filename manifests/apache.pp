@@ -16,14 +16,14 @@
 #
 
 class zanata::apache (
-  $vhost_name = $::fqdn,
-  $serveradmin = "webmaster@${::fqdn}",
-  $ssl_cert_file = '/etc/ssl/certs/ssl-cert-snakeoil.pem',
-  $ssl_key_file = '/etc/ssl/private/ssl-cert-snakeoil.key',
-  $ssl_chain_file = '',
-  $ssl_cert_file_contents = '', # If left empty puppet will not create file.
-  $ssl_key_file_contents = '', # If left empty puppet will not create file.
+  $serveradmin             = "webmaster@${::fqdn}",
+  $ssl_cert_file           = '/etc/ssl/certs/ssl-cert-snakeoil.pem',
+  $ssl_cert_file_contents  = '', # If left empty puppet will not create file.
+  $ssl_chain_file          = '',
   $ssl_chain_file_contents = '', # If left empty puppet will not create file.
+  $ssl_key_file            = '/etc/ssl/private/ssl-cert-snakeoil.key',
+  $ssl_key_file_contents   = '', # If left empty puppet will not create file.
+  $vhost_name              = $::fqdn,
 ) {
 
   include ::httpd
