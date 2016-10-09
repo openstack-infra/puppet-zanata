@@ -104,7 +104,7 @@ class zanata::client(
     require => File["/opt/zanata/zanata-cli-${version}/bin/zanata-cli"],
   }
 
-  package { 'openjdk-7-jre-headless':
+  package { 'default-jre-headless':
     ensure => present,
   }
 

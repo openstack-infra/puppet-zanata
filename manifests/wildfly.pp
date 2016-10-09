@@ -19,7 +19,9 @@ class zanata::wildfly(
   $wildfly_install_source = 'https://repo1.maven.org/maven2/org/wildfly/wildfly-dist/9.0.1.Final/wildfly-dist-9.0.1.Final.tar.gz',
 ) {
 
-  package { 'openjdk-7-jre-headless':
+  $javahome = '/usr/lib/jvm/default-java/jre/'
+
+  package { 'default-jre-headless':
     ensure => present,
   }
 
@@ -27,8 +29,8 @@ class zanata::wildfly(
     version        => $wildfly_version,
     install_source => $wildfly_install_source,
     config         => 'standalone.xml',
-    java_home      => '/usr/lib/jvm/java-7-openjdk-amd64/jre/',
+    java_home      => $javahome,
     java_xmx       => '4096m',
-    require        => Package['openjdk-7-jre-headless'],
+    require        => Package['default-jre-headless'],
   }
 }
