@@ -104,6 +104,15 @@ class zanata(
     require      => Package['unzip'],
   }
 
+  # The mysql driver name differs based on the version of the package. Ensure
+  # we set it correctly when writing the standalone.xml config file below.
+  if ($::operatingsystem == 'Ubuntu') and ($::operatingsystemrelease >= '16.04') {
+    $mysql_driver_name = 'mysql-connector-java.jar_com.mysql.jdbc.Driver_5_1'
+  }
+  else {
+    $mysql_driver_name = 'mysql-connector-java.jar'
+  }
+
   file { '/opt/wildfly/standalone/deployments/mysql-connector-java.jar':
     ensure  => 'link',
     target  => '/usr/share/java/mysql-connector-java.jar',
