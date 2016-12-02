@@ -29,7 +29,7 @@ class zanata::wildfly(
     # This is a hack to make sure that systemd is aware of the new service
     # before we attempt to start it.
     exec { 'wildfly-systemd-daemon-reload':
-      command     => '/usr/bin/systemctl daemon-reload',
+      command     => '/bin/systemctl daemon-reload',
       before      => Service['wildfly'],
       subscribe   => File['/etc/init.d/wildfly'],
       refreshonly => true,
