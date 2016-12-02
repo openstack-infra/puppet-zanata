@@ -1,0 +1,10 @@
+Code-Review+2: Elizabeth K. Joseph <lyz@princessleia.com>
+Code-Review+1: Andreas Jaeger <jaegerandi@gmail.com>
+Code-Review+2: Paul Belanger <pabelanger@redhat.com>
+Workflow+1: Paul Belanger <pabelanger@redhat.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Fri, 02 Dec 2016 19:19:25 +0000
+Reviewed-on: https://review.openstack.org/406308
+Project: openstack-infra/puppet-zanata
+Branch: refs/heads/master
