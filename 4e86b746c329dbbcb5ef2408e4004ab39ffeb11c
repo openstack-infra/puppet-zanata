@@ -1,0 +1,10 @@
+Code-Review+2: Jeremy Stanley <fungi@yuggoth.org>
+Code-Review+1: Ian Y. Choi <ianyrchoi@gmail.com>
+Code-Review+2: Ian Wienand <iwienand@redhat.com>
+Workflow+1: Ian Wienand <iwienand@redhat.com>
+Verified+2: Jenkins
+Submitted-by: Jenkins
+Submitted-at: Mon, 05 Dec 2016 22:49:46 +0000
+Reviewed-on: https://review.openstack.org/406398
+Project: openstack-infra/puppet-zanata
+Branch: refs/heads/master
