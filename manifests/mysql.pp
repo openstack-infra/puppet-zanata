@@ -1,4 +1,5 @@
 # Copyright 2014 Hewlett-Packard Development Company, L.P.
+# Copyright 2017 Deutsche Telekom AG, Frank Kloeker <f.kloeker@telekom.de>
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
@@ -14,15 +15,68 @@
 #
 # == Class: zanata::mysql
 #
+# Maintaining MySQL backend for zanata (incl. backups)
+#
+# === Parameters
+#
+# [*mysql_root_password*]
+# Root password for MySQL (default: root)
+#
+# [*mysql_host*]
+# Hostname for MySQL backend (default: localhost)
+#
+# [*mysql_bind_address*]
+# Bind address for MySQL service (default: 127.0.0.1)
+#
+# [*mysql_port*]
+# Port auf MySQL service (default: 3306)
+#
+# [*db_name*]
+# Name of MySQL database (default: zanata)
+#
+# [*db_username*]
+# MySQL username for application (default: zanata)
+#
+# [*db_password*]
+# MySQL password for application user
+#
+# [*mysqlbackup*]
+# Trigger for doing backups? true or false
+#
+# [*backupuser*]
+# MySQL username for backup (default: backup)
+#
+# [*backuppassword*]
+# MySQL password for backup user
+#
+# [*backupdir*]
+# Target directory for backup files (default: /data/mysql_backups)
+#
+# [*backuprotate*]
+# Days of rotating backup files (default: 35)
+#
+# [*backupdbs*]
+# Array of databases to backup (default: ['zanata']
+#
+# [*backuptime*]
+# Array in ['hh','mm'] for backup cron (default: 23:05)
+#
+#
 class zanata::mysql(
-  $mysql_root_password = '',
+  $mysql_root_password = 'root',
   $mysql_host = 'localhost',
   $mysql_bind_address = '127.0.0.1',
   $mysql_port = '3306',
   $db_name = 'zanata',
   $db_username = 'zanata',
   $db_password,
-
+  $mysqlbackup = undef,
+  $backupuser,
+  $backuppassword,
+  $backupdir = '/data/mysql_backups',
+  $backuprotate = '35',
+  $backupdbs = ['zanata'],
+  $backuptime = ['23','5'],
 ) {
 
   class { '::mysql::server':
@@ -48,5 +102,19 @@ class zanata::mysql(
                   Class['mysql::server'],
                   Class['mysql::server::account_security'],
                 ],
+  }
+
+  if $mysqlbackup == true {
+    class { '::mysql::server::backup':
+      ensure            => present,
+      backupuser        => $backupuser,
+      backuppassword    => $backuppassword,
+      backupdir         => $backupdir,
+      backupcompress    => true,
+      backuprotate      => $backuprotate,
+      backupdatabases   => $backupdbs,
+      file_per_database => true,
+      time              => $backuptime,
+    }
   }
 }
