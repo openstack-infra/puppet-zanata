@@ -86,22 +86,24 @@ class zanata(
     ]
   }
 
-  archive { "/home/wildfly/${zanata_hibernate_file}":
-    ensure       => present,
-    user         => 'wildfly',
-    source       => $zanata_hibernate_url,
-    extract      => true,
-    extract_path => '/opt/wildfly/',
-    require      => Package['unzip'],
-  }
+  if ($zanata_wildfly_version < '10.0.0') {
+    archive { "/home/wildfly/${zanata_hibernate_file}":
+      ensure       => present,
+      user         => 'wildfly',
+      source       => $zanata_hibernate_url,
+      extract      => true,
+      extract_path => '/opt/wildfly/',
+      require      => Package['unzip'],
+    }
 
-  archive { "/home/wildfly/${zanata_mojarra_file}":
-    ensure       => present,
-    user         => 'wildfly',
-    source       => $zanata_mojarra_url,
-    extract      => true,
-    extract_path => '/opt/wildfly/',
-    require      => Package['unzip'],
+    archive { "/home/wildfly/${zanata_mojarra_file}":
+      ensure       => present,
+      user         => 'wildfly',
+      source       => $zanata_mojarra_url,
+      extract      => true,
+      extract_path => '/opt/wildfly/',
+      require      => Package['unzip'],
+    }
   }
 
   # The mysql driver name differs based on the version of the package. Ensure
