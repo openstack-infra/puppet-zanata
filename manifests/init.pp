@@ -86,24 +86,6 @@ class zanata(
     ]
   }
 
-  archive { "/home/wildfly/${zanata_hibernate_file}":
-    ensure       => present,
-    user         => 'wildfly',
-    source       => $zanata_hibernate_url,
-    extract      => true,
-    extract_path => '/opt/wildfly/',
-    require      => Package['unzip'],
-  }
-
-  archive { "/home/wildfly/${zanata_mojarra_file}":
-    ensure       => present,
-    user         => 'wildfly',
-    source       => $zanata_mojarra_url,
-    extract      => true,
-    extract_path => '/opt/wildfly/',
-    require      => Package['unzip'],
-  }
-
   # The mysql driver name differs based on the version of the package. Ensure
   # we set it correctly when writing the standalone.xml config file below.
   if ($::operatingsystem == 'Ubuntu') and ($::operatingsystemrelease >= '16.04') {
@@ -122,19 +104,52 @@ class zanata(
                 ],
   }
 
-  file { '/opt/wildfly/standalone/configuration/standalone.xml':
-    ensure  => present,
-    notify  => Service['wildfly'],
-    owner   => wildfly,
-    group   => wildfly,
-    content => template('zanata/standalone.xml.erb'),
-    require => [
-                Class['zanata::wildfly'],
-                Archive['/opt/wildfly/standalone/deployments/ROOT.war'],
-                Archive["/home/wildfly/${zanata_mojarra_file}"],
-                Archive["/home/wildfly/${zanata_hibernate_file}"],
-                ],
+  if ($zanata_wildfly_version < '10.0.0') {
+    archive { "/home/wildfly/${zanata_hibernate_file}":
+      ensure       => present,
+      user         => 'wildfly',
+      source       => $zanata_hibernate_url,
+      extract      => true,
+      extract_path => '/opt/wildfly/',
+      require      => Package['unzip'],
+    }
+
+    archive { "/home/wildfly/${zanata_mojarra_file}":
+      ensure       => present,
+      user         => 'wildfly',
+      source       => $zanata_mojarra_url,
+      extract      => true,
+      extract_path => '/opt/wildfly/',
+      require      => Package['unzip'],
+    }
+
+    file { '/opt/wildfly/standalone/configuration/standalone.xml':
+      ensure  => present,
+      notify  => Service['wildfly'],
+      owner   => wildfly,
+      group   => wildfly,
+      content => template('zanata/wildfly-9-standalone.xml.erb'),
+      require => [
+                  Class['zanata::wildfly'],
+                  Archive['/opt/wildfly/standalone/deployments/ROOT.war'],
+                  Archive["/home/wildfly/${zanata_mojarra_file}"],
+                  Archive["/home/wildfly/${zanata_hibernate_file}"],
+                  ],
+    }
+  } else {
+    file { '/opt/wildfly/standalone/configuration/standalone.xml':
+      ensure  => present,
+      notify  => Service['wildfly'],
+      owner   => wildfly,
+      group   => wildfly,
+      content => template('zanata/wildfly-10-standalone.xml.erb'),
+      require => [
+                  Class['zanata::wildfly'],
+                  Archive['/opt/wildfly/standalone/deployments/ROOT.war'],
+                  ],
+    }
   }
+
 }
 
 # == Define: zanata::validate_listener
