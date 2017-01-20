@@ -308,6 +308,10 @@
             <default-security-domain value="other" />
             <default-missing-method-permissions-deny-access value="true" />
             <log-system-exceptions value="true" />
+            <mdb>
+              <resource-adapter-ref resource-adapter-name="hornetq-ra"/>
+                <bean-instance-pool-ref pool-name="mdb-strict-max-pool"/>
+            </mdb>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:io:1.1">
             <worker name="default"/>
