@@ -25,17 +25,6 @@ class zanata::wildfly(
     ensure => present,
   }
 
-  if ($::operatingsystem == 'Ubuntu') and ($::operatingsystemrelease >= '16.04') {
-    # This is a hack to make sure that systemd is aware of the new service
-    # before we attempt to start it.
-    exec { 'wildfly-systemd-daemon-reload':
-      command     => '/bin/systemctl daemon-reload',
-      before      => Service['wildfly'],
-      subscribe   => File['/etc/init.d/wildfly'],
-      refreshonly => true,
-    }
-  }
-
   class { '::wildfly':
     version        => $wildfly_version,
     install_source => $wildfly_install_source,
