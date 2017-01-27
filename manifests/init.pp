@@ -22,12 +22,20 @@ class zanata(
   $zanata_db_username = 'zanata',
   $zanata_db_password,
 
+  # For wildfly < 10 the zanata_url below is expected to be a url to a built
+  # war for wildfly >=10 the expectation is that it is the url to one of the
+  # published zipfiles that can be overlaid atop the wildfly installation
+  # dir.
   $zanata_wildfly_version = '9.0.1',
   $zanata_wildfly_install_url = 'https://repo1.maven.org/maven2/org/wildfly/wildfly-dist/9.0.1.Final/wildfly-dist-9.0.1.Final.tar.gz',
 
   $zanata_hibernate_url = 'https://sourceforge.net/projects/zanata/files/wildfly/wildfly-8.1.0.Final-module-hibernate-main-4.2.15.Final.zip',
   $zanata_mojarra_url = 'https://sourceforge.net/projects/zanata/files/wildfly/wildfly-8.1.0.Final-module-mojarra-2.1.28.zip',
+  # The default here is to a war file and can be used with wildfly < 10.
+  # If using wildfly >= 10 an example url would be:
+  # https://github.com/zanata/zanata-server/releases/download/server-3.9.6/zanata-3.9.6-wildfly.zip
   $zanata_url = 'https://sourceforge.net/projects/zanata/files/webapp/zanata-war-3.7.3.war',
+  # This should be a sha1 of whatever file is hosted at the url above.
   $zanata_checksum = '59f1ac35cce46ba4e46b06a239cd7ab4e10b5528',
 
   $zanata_default_from_address,
@@ -46,25 +54,17 @@ class zanata(
   $zanata_smtp_ssl = '',
 
 ) {
+  zanata::validate_listener { $zanata_listeners: }
 
   $zanata_file = inline_template('<%= File.basename(@zanata_url) %>')
+  $zanata_ext = inline_template('<%= File.extname(@zanata_url) %>')
   $wildfly_file = inline_template('<%= File.basename(@zanata_wildfly_install_url) %>')
   $zanata_hibernate_file = inline_template('<%= File.basename(@zanata_hibernate_url) %>')
   $zanata_mojarra_file = inline_template('<%= File.basename(@zanata_mojarra_url) %>')
 
-  zanata::validate_listener { $zanata_listeners:
-  }
-
   class { '::zanata::wildfly':
     wildfly_version        => $zanata_wildfly_version,
     wildfly_install_source => $zanata_wildfly_install_url,
-  }
-
-  package { [
-    'libmysql-java',
-    'unzip'
-    ]:
-    ensure => present,
   }
 
   file { $zanata_storage_dir:
@@ -73,38 +73,49 @@ class zanata(
     group  => 'wildfly'
   }
 
+  package { 'unzip':
+    ensure => present,
+  }
   include '::archive'
 
-  archive { '/opt/wildfly/standalone/deployments/ROOT.war':
-    ensure        => present,
-    user          => 'wildfly',
-    source        => $zanata_url,
-    checksum_type => 'sha1',
-    checksum      => $zanata_checksum,
-    require       => [
-      Class['wildfly::install'],
-    ]
-  }
+  if ($zanata_ext == '.war') {
+    # This implies the old wildfly <10 install method of installing wildfly
+    # then manually injecting deps and the war into the wildfly install.
+    # You need to make sure you provide a .war file url for zanata when
+    # using wildfly < 10.
+    package { 'libmysql-java':
+      ensure => present,
+    }
 
-  # The mysql driver name differs based on the version of the package. Ensure
-  # we set it correctly when writing the standalone.xml config file below.
-  if ($::operatingsystem == 'Ubuntu') and ($::operatingsystemrelease >= '16.04') {
-    $mysql_driver_name = 'mysql-connector-java.jar_com.mysql.jdbc.Driver_5_1'
-  }
-  else {
-    $mysql_driver_name = 'mysql-connector-java.jar'
-  }
+    # The mysql driver name differs based on the version of the package. Ensure
+    # we set it correctly when writing the standalone.xml config file below.
+    if ($::operatingsystem == 'Ubuntu') and ($::operatingsystemrelease >= '16.04') {
+      $mysql_driver_name = 'mysql-connector-java.jar_com.mysql.jdbc.Driver_5_1'
+    }
+    else {
+      $mysql_driver_name = 'mysql-connector-java.jar'
+    }
 
-  file { '/opt/wildfly/standalone/deployments/mysql-connector-java.jar':
-    ensure  => 'link',
-    target  => '/usr/share/java/mysql-connector-java.jar',
-    require => [
-                Package['libmysql-java'],
-                Class['zanata::wildfly'],
-                ],
-  }
+    file { '/opt/wildfly/standalone/deployments/mysql-connector-java.jar':
+      ensure  => 'link',
+      target  => '/usr/share/java/mysql-connector-java.jar',
+      require => [
+                  Package['libmysql-java'],
+                  Class['zanata::wildfly'],
+                  ],
+    }
 
-  if (versioncmp($zanata_wildfly_version, '10.0.0') < 0) {
+    archive { '/opt/wildfly/standalone/deployments/ROOT.war':
+      ensure        => present,
+      user          => 'wildfly',
+      source        => $zanata_url,
+      checksum_type => 'sha1',
+      checksum      => $zanata_checksum,
+      require       => [
+        Class['wildfly::install'],
+      ]
+    }
+
     archive { "/home/wildfly/${zanata_hibernate_file}":
       ensure       => present,
       user         => 'wildfly',
@@ -136,7 +147,32 @@ class zanata(
                   Archive["/home/wildfly/${zanata_hibernate_file}"],
                   ],
     }
-  } else {
+  }
+  else if ($zanata_ext == '.zip') {
+    # This implies the newer wildfly >= 10 install method where we install
+    # wildfly, then unpack the zanata zip file into that install dir which
+    # gives us all of our deps. You need to make sure you provide a .zip file
+    # url for zanata when using wildfly > 10.
+    $mysql_driver_name = 'mysql-connector-java.jar'
+    archive { "/tmp/$zanata_file":
+      ensure        => present,
+      user          => 'wildfly',
+      source        => $zanata_url,
+      extract_path  => '/opt/wildfly',
+      checksum_type => 'sha1',
+      checksum      => $zanata_checksum,
+      require       => [
+        Class['wildfly::install'],
+      ]
+    }
+
+    file { '/opt/wildfly/standalone/deployments/ROOT.war':
+      ensure  => link,
+      target  => '/opt/wildfly/standalone/deployments/zanata.war',
+      require => Archive["/tmp/zanata_${zanata_checksum}"],
+    }
+
+    # TODO make this handle wildfly >10.
     file { '/opt/wildfly/standalone/configuration/standalone.xml':
       ensure  => present,
       notify  => Service['wildfly'],
@@ -145,11 +181,13 @@ class zanata(
       content => template('zanata/wildfly-10-standalone.xml.erb'),
       require => [
                   Class['zanata::wildfly'],
-                  Archive['/opt/wildfly/standalone/deployments/ROOT.war'],
+                  File['/opt/wildfly/standalone/deployments/ROOT.war'],
                   ],
     }
   }
-
+  else {
+    fail("zanata_url must be for a .war or .zip file.")
+  }
 }
 
 # == Define: zanata::validate_listener
