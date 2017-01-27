@@ -195,7 +195,7 @@
                 <datasource jndi-name="java:jboss/datasources/zanataDatasource" pool-name="zanataDatasource" enabled="true" use-ccm="true">
                     <connection-url>jdbc:mysql://<%= @mysql_host %>:<%= @mysql_port %>/zanata?characterEncoding=UTF-8</connection-url>
                     <driver-class>com.mysql.jdbc.Driver</driver-class>
-                    <driver><%= @mysql_driver_name %></driver>
+                    <driver>mysql-connector-java.jar</driver>
                     <pool>
                         <min-pool-size>0</min-pool-size>
                         <max-pool-size>20</max-pool-size>
