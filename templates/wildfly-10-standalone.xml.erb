@@ -45,46 +45,53 @@
         <security-realms>
             <security-realm name="ManagementRealm">
                 <authentication>
-                    <local default-user="$local" skip-group-loading="true"/>
-                    <properties path="mgmt-users.properties" relative-to="jboss.server.config.dir"/>
+                    <local default-user="$local" skip-group-loading="true" />
+                    <properties path="mgmt-users.properties"
+                      relative-to="jboss.server.config.dir" />
                 </authentication>
                 <authorization map-groups-to-roles="false">
-                    <properties path="mgmt-groups.properties" relative-to="jboss.server.config.dir"/>
+                    <properties path="mgmt-groups.properties"
+                      relative-to="jboss.server.config.dir" />
                 </authorization>
             </security-realm>
             <security-realm name="ApplicationRealm">
                 <authentication>
-                    <local default-user="$local" allowed-users="*" skip-group-loading="true"/>
-                    <properties path="application-users.properties" relative-to="jboss.server.config.dir"/>
+                    <local default-user="$local" allowed-users="*"
+                      skip-group-loading="true" />
+                    <properties path="application-users.properties"
+                      relative-to="jboss.server.config.dir" />
                 </authentication>
                 <authorization>
-                    <properties path="application-roles.properties" relative-to="jboss.server.config.dir"/>
+                    <properties path="application-roles.properties"
+                      relative-to="jboss.server.config.dir" />
                 </authorization>
             </security-realm>
         </security-realms>
         <audit-log>
             <formatters>
-                <json-formatter name="json-formatter"/>
+                <json-formatter name="json-formatter" />
             </formatters>
             <handlers>
-                <file-handler name="file" formatter="json-formatter" path="audit-log.log" relative-to="jboss.server.data.dir"/>
+                <file-handler name="file" formatter="json-formatter"
+                  path="audit-log.log" relative-to="jboss.server.data.dir" />
             </handlers>
             <logger log-boot="true" log-read-only="false" enabled="false">
                 <handlers>
-                    <handler name="file"/>
+                    <handler name="file" />
                 </handlers>
             </logger>
         </audit-log>
         <management-interfaces>
-            <http-interface security-realm="ManagementRealm" http-upgrade-enabled="true">
-                <socket-binding http="management-http"/>
+            <http-interface security-realm="ManagementRealm"
+              http-upgrade-enabled="true">
+                <socket-binding http="management-http" />
             </http-interface>
         </management-interfaces>
         <access-control provider="simple">
             <role-mapping>
                 <role name="SuperUser">
                     <include>
-                        <user name="$local"/>
+                        <user name="$local" />
                     </include>
                 </role>
             </role-mapping>
@@ -94,18 +101,18 @@
     <profile>
         <subsystem xmlns="urn:jboss:domain:logging:3.0">
             <console-handler name="CONSOLE">
-                <level name="INFO"/>
+                <level name="INFO" />
                 <formatter>
-                    <named-formatter name="COLOR-PATTERN"/>
+                    <named-formatter name="COLOR-PATTERN" />
                 </formatter>
             </console-handler>
             <periodic-rotating-file-handler name="FILE" autoflush="true">
                 <formatter>
-                    <named-formatter name="PATTERN"/>
+                    <named-formatter name="PATTERN" />
                 </formatter>
-                <file relative-to="jboss.server.log.dir" path="server.log"/>
-                <suffix value=".yyyy-MM-dd"/>
-                <append value="true"/>
+                <file relative-to="jboss.server.log.dir" path="server.log" />
+                <suffix value=".yyyy-MM-dd" />
+                <append value="true" />
             </periodic-rotating-file-handler>
             <logger category="com.arjuna">
                 <level name="WARN" />
@@ -185,15 +192,7 @@
         <subsystem xmlns="urn:jboss:domain:bean-validation:1.0" />
         <subsystem xmlns="urn:jboss:domain:datasources:4.0">
             <datasources>
-                <datasource jndi-name="java:jboss/datasources/ExampleDS" pool-name="ExampleDS" enabled="true" use-java-context="true">
-                    <connection-url>jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE</connection-url>
-                    <driver>h2</driver>
-                    <security>
-                        <user-name>sa</user-name>
-                        <password>sa</password>
-                    </security>
-                </datasource>
-                <datasource jndi-name="java:jboss/datasources/zanataDatasource" pool-name="zanataDatasource" enabled="true" use-ccm="false">
+                <datasource jndi-name="java:jboss/datasources/zanataDatasource" pool-name="zanataDatasource" enabled="true" use-ccm="true">
                     <connection-url>jdbc:mysql://<%= @mysql_host %>:<%= @mysql_port %>/zanata?characterEncoding=UTF-8</connection-url>
                     <driver-class>com.mysql.jdbc.Driver</driver-class>
                     <driver><%= @mysql_driver_name %></driver>
@@ -217,6 +216,15 @@
                         <valid-connection-checker class-name="org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLValidConnectionChecker"></valid-connection-checker>
                         <exception-sorter class-name="org.jboss.jca.adapters.jdbc.extensions.mysql.MySQLExceptionSorter"></exception-sorter>
                     </validation>
+                </datasource>
+                <datasource jndi-name="java:jboss/datasources/ExampleDS"
+                  pool-name="ExampleDS" enabled="true" use-java-context="true">
+                    <connection-url>jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE</connection-url>
+                    <driver>h2</driver>
+                    <security>
+                        <user-name>sa</user-name>
+                        <password>sa</password>
+                    </security>
                 </datasource>
                 <drivers>
                     <driver name="h2" module="com.h2database.h2">
@@ -310,8 +318,8 @@
             <log-system-exceptions value="true" />
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:io:1.1">
-            <worker name="default"/>
-            <buffer-pool name="default"/>
+            <worker name="default" />
+            <buffer-pool name="default" />
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:infinispan:4.0">
             <cache-container name="server" module="org.wildfly.clustering.server"
@@ -373,7 +381,7 @@
                 </local-cache>
             </cache-container>
         </subsystem>
-        <subsystem xmlns="urn:jboss:domain:jaxrs:1.0"/>
+        <subsystem xmlns="urn:jboss:domain:jaxrs:1.0" />
         <subsystem xmlns="urn:jboss:domain:jca:4.0">
             <archive-validation enabled="true" fail-on-error="true"
               fail-on-warn="false" />
@@ -394,14 +402,15 @@
             </default-workmanager>
             <cached-connection-manager debug="true" error="true" />
         </subsystem>
-        <subsystem xmlns="urn:jboss:domain:jdr:1.0"/>
+        <subsystem xmlns="urn:jboss:domain:jdr:1.0" />
         <subsystem xmlns="urn:jboss:domain:jmx:1.3">
-            <expose-resolved-model/>
-            <expose-expression-model/>
-            <remoting-connector/>
+            <expose-resolved-model />
+            <expose-expression-model />
+            <remoting-connector />
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:jpa:1.1">
-            <jpa default-datasource="" default-extended-persistence-inheritance="DEEP"/>
+            <jpa default-datasource=""
+              default-extended-persistence-inheritance="DEEP" />
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:jsf:1.0" />
         <subsystem xmlns="urn:jboss:domain:jsr77:1.0" />
@@ -476,9 +485,9 @@
                 <simple name="java:global/zanata/smtp/ssl" value="<%= @zanata_smtp_ssl %>" />
 <% end -%>
             </bindings>
-            <remote-naming/>
+            <remote-naming />
         </subsystem>
-        <subsystem xmlns="urn:jboss:domain:pojo:1.0"/>
+        <subsystem xmlns="urn:jboss:domain:pojo:1.0" />
         <subsystem xmlns="urn:jboss:domain:remoting:3.0">
             <endpoint />
             <http-connector name="http-remoting-connector" connector-ref="default"
@@ -486,7 +495,7 @@
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:resource-adapters:4.0" />
         <subsystem xmlns="urn:jboss:domain:request-controller:1.0" />
-        <subsystem xmlns="urn:jboss:domain:sar:1.0"/>
+        <subsystem xmlns="urn:jboss:domain:sar:1.0" />
         <subsystem xmlns="urn:jboss:domain:security-manager:1.0">
             <deployment-permissions>
                 <maximum-set>
@@ -498,27 +507,41 @@
             <security-domains>
                 <security-domain name="zanata">
                     <authentication>
-                        <login-module code="org.zanata.security.ZanataCentralLoginModule" flag="required"/>
+                        <login-module code="org.zanata.security.ZanataCentralLoginModule"
+                          flag="required" />
                     </authentication>
                 </security-domain>
+                <!-- Zanata Internal authentication login module -->
                 <security-domain name="zanata.internal">
                     <authentication>
-                        <login-module code="org.jboss.seam.security.jaas.SeamLoginModule" flag="required"/>
+                        <login-module code="org.zanata.security.jaas.InternalLoginModule"
+                          flag="required" />
                     </authentication>
                 </security-domain>
+                <!-- Zanata Open Id authentication login module -->
                 <security-domain name="zanata.openid">
                     <authentication>
-                        <login-module code="org.zanata.security.OpenIdLoginModule" flag="required" />
+                        <login-module code="org.zanata.security.OpenIdLoginModule"
+                          flag="required" >
+<% if @zanata_openid_provider_url != '' -%>
+                            <module-option name="providerURL" value="<%= @zanata_openid_provider_url %>" />
+<% end -%>
+                        </login-module>
                     </authentication>
                 </security-domain>
+                <!-- Zanata JAAS (custom) authentication login module -->
                 <security-domain name="zanata.jaas">
                     <authentication>
-                        <login-module code="org.jboss.security.auth.spi.DatabaseServerLoginModule" flag="required">
-                            <module-option name="dsJndiName" value="java:authdb"/>
-                            <module-option name="principalsQuery" value="SELECT password FROM users WHERE username = ?"/>
-                            <module-option name="rolesQuery" value="select '','' FROM users WHERE username = ?"/>
-                            <module-option name="hashAlgorithm" value="md5"/>
-                            <module-option name="hashEncoding" value="hex"/>
+                        <login-module
+                          code="org.jboss.security.auth.spi.DatabaseServerLoginModule"
+                          flag="required">
+                            <module-option name="dsJndiName" value="java:authdb" />
+                            <module-option name="principalsQuery"
+                              value="SELECT password FROM users WHERE username = ?" />
+                            <module-option name="rolesQuery"
+                              value="select '','' FROM users WHERE username = ?" />
+                            <module-option name="hashAlgorithm" value="md5" />
+                            <module-option name="hashEncoding" value="hex" />
                         </login-module>
                     </authentication>
                 </security-domain>
@@ -554,24 +577,26 @@
                         </login-module>
                     </authentication>
                 </security-domain>
+                <!-- For other Zanata authentication options, see
+                 http://docs.zanata.org/en/release/user-guide/system-admin/configuration/authentication/ -->
                 <security-domain name="other" cache-type="default">
                     <authentication>
                         <login-module code="Remoting" flag="optional">
-                            <module-option name="password-stacking" value="useFirstPass"/>
+                            <module-option name="password-stacking" value="useFirstPass" />
                         </login-module>
                         <login-module code="RealmDirect" flag="required">
-                            <module-option name="password-stacking" value="useFirstPass"/>
+                            <module-option name="password-stacking" value="useFirstPass" />
                         </login-module>
                     </authentication>
                 </security-domain>
                 <security-domain name="jboss-web-policy" cache-type="default">
                     <authorization>
-                        <policy-module code="Delegating" flag="required"/>
+                        <policy-module code="Delegating" flag="required" />
                     </authorization>
                 </security-domain>
                 <security-domain name="jboss-ejb-policy" cache-type="default">
                     <authorization>
-                        <policy-module code="Delegating" flag="required"/>
+                        <policy-module code="Delegating" flag="required" />
                     </authorization>
                 </security-domain>
             </security-domains>
@@ -599,20 +624,23 @@
 <% end -%>
                 <http-listener name="default" socket-binding="http"/>
                 <host name="default-host" alias="localhost">
-                    <location name="/" handler="welcome-content"/>
-                    <filter-ref name="server-header"/>
-                    <filter-ref name="x-powered-by-header"/>
+                    <location name="/" handler="welcome-content" />
+                    <filter-ref name="server-header" />
+                    <filter-ref name="x-powered-by-header" />
                 </host>
             </server>
             <servlet-container name="default">
-                <jsp-config/>
+                <jsp-config />
+                <websockets />
             </servlet-container>
             <handlers>
-                <file name="welcome-content" path="${jboss.home.dir}/welcome-content"/>
+                <file name="welcome-content" path="${jboss.home.dir}/welcome-content" />
             </handlers>
             <filters>
-                <response-header name="server-header" header-name="Server" header-value="WildFly/10"/>
-                <response-header name="x-powered-by-header" header-name="X-Powered-By" header-value="Undertow/1"/>
+                <response-header name="server-header" header-value="WildFly/10"
+                  header-name="Server" />
+                <response-header name="x-powered-by-header" header-value="Undertow/1"
+                  header-name="X-Powered-By" />
             </filters>
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:webservices:2.0">
@@ -627,17 +655,18 @@
             </endpoint-config>
             <client-config name="Standard-Client-Config" />
         </subsystem>
+        <subsystem xmlns="urn:jboss:domain:weld:2.0"/>
     </profile>
 
     <interfaces>
         <interface name="management">
-            <inet-address value="${jboss.bind.address.management:0.0.0.0}"/>
+            <inet-address value="${jboss.bind.address.management:127.0.0.1}" />
         </interface>
         <interface name="public">
-            <inet-address value="${jboss.bind.address:0.0.0.0}"/>
+            <inet-address value="${jboss.bind.address:127.0.0.1}" />
         </interface>
         <interface name="unsecure">
-            <inet-address value="${jboss.bind.address.unsecure:0.0.0.0}"/>
+            <inet-address value="${jboss.bind.address.unsecure:127.0.0.1}" />
         </interface>
     </interfaces>
 
