@@ -33,4 +33,13 @@ class zanata::wildfly(
     java_xmx       => '4096m',
     require        => Package['default-jre-headless'],
   }
+
+  cron { 'cleanup-wildfly-logs':
+    command     => 'find /opt/wildfly/standalone/log -type f -name \'*.log.*\' -mtime +14 -delete',
+    user        => 'root',
+    hour        => '6',
+    minute      => '7',
+    environment => 'PATH=/usr/bin:/bin:/usr/sbin:/sbin',
+    require     => Class['wildfly'],
+  }
 }
