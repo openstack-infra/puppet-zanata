@@ -15,14 +15,13 @@
 # == Class: zanata::mysql
 #
 class zanata::mysql(
+  $db_password,
   $mysql_root_password = '',
   $mysql_host = 'localhost',
   $mysql_bind_address = '127.0.0.1',
   $mysql_port = '3306',
   $db_name = 'zanata',
   $db_username = 'zanata',
-  $db_password,
-
 ) {
 
   class { '::mysql::server':
