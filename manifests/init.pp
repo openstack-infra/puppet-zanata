@@ -16,11 +16,11 @@
 #
 
 class zanata(
+  $zanata_db_password,
   $mysql_host = 'localhost',
   $mysql_port = '3306',
   $zanata_db_name = 'zanata',
   $zanata_db_username = 'zanata',
-  $zanata_db_password,
 
   # For wildfly < 10 the zanata_url below is expected to be a url to a built
   # war for wildfly >=10 the expectation is that it is the url to one of the
