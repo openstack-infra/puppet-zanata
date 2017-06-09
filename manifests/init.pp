@@ -16,11 +16,12 @@
 #
 
 class zanata(
+  $zanata_default_from_address,
+  $zanata_db_password,
   $mysql_host = 'localhost',
   $mysql_port = '3306',
   $zanata_db_name = 'zanata',
   $zanata_db_username = 'zanata',
-  $zanata_db_password,
 
   # For wildfly < 10 the zanata_url below is expected to be a url to a built
   # war for wildfly >=10 the expectation is that it is the url to one of the
@@ -38,7 +39,6 @@ class zanata(
   # This should be a sha1 of whatever file is hosted at the url above.
   $zanata_checksum = '59f1ac35cce46ba4e46b06a239cd7ab4e10b5528',
 
-  $zanata_default_from_address,
   $zanata_storage_dir = '/home/wildfly/zanata',
 
   $zanata_openid_provider_url = '',
@@ -52,7 +52,6 @@ class zanata(
   $zanata_smtp_password = '',
   $zanata_smtp_tls = '',
   $zanata_smtp_ssl = '',
-
 ) {
   zanata::validate_listener { $zanata_listeners: }
 
