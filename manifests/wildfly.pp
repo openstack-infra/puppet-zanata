@@ -15,8 +15,8 @@
 # == Class: zanata::wildfly
 #
 class zanata::wildfly(
-  $wildfly_version = '9.0.1',
-  $wildfly_install_source = 'https://repo1.maven.org/maven2/org/wildfly/wildfly-dist/9.0.1.Final/wildfly-dist-9.0.1.Final.tar.gz',
+  $wildfly_version = '10.1.0',
+  $wildfly_install_source = 'https://repo1.maven.org/maven2/org/wildfly/wildfly-dist/10.1.0.Final/wildfly-dist-10.1.0.Final.tar.gz',
 ) {
 
   $javahome = '/usr/lib/jvm/default-java/jre/'
