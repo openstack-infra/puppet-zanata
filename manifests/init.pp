@@ -20,6 +20,7 @@ class zanata(
   $zanata_db_password,
   $mysql_host = 'localhost',
   $mysql_port = '3306',
+  $zanata_main_version = 3,
   $zanata_db_name = 'zanata',
   $zanata_db_username = 'zanata',
 

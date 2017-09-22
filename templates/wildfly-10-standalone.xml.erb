@@ -32,15 +32,48 @@
         <extension module="org.wildfly.extension.security.manager" />
         <extension module="org.wildfly.extension.undertow" />
     </extensions>
-
     <system-properties>
+<% if @zanata_main_version.to_i < 4 -%>
         <property name="javamelody.storage-directory" value="<%= @zanata_storage_dir %>/stats"/>
         <property name="hibernate.search.default.indexBase" value="<%= @zanata_storage_dir %>/indexes"/>
         <property name="ehcache.disk.store.dir" value="<%= @zanata_storage_dir %>/ehcache"/>
         <property name="jboss.as.management.blocking.timeout" value="1000"/>
+<% else -%>
+        <property name="javamelody.storage-directory" value="<%= @zanata_storage_dir %>/stats"/>
+        <property name="hibernate.search.default.indexBase" value="<%= @zanata_storage_dir %>/indexes"/>
+        <property name="jboss.as.management.blocking.timeout" value="1000"/>
+<% if @zanata_openid_provider_url == '' -%>
+        <property name="zanata.security.authpolicy.internal" value="zanata.internal"/>
+<% end -%>
+        <property name="zanata.security.authpolicy.internal" value="zanata.internal"/>
+        <property name="zanata.security.authpolicy.openid" value="zanata.openid"/>
+<% if @zanata_admin_users != '' -%>
+        <property name="zanata.security.adminusers" value="<%= @zanata_admin_users %>"/>
+<% else -%>
+        <property name="zanata.security.adminusers" value="admin"/>
+<% end -%>
+        <property name="zanata.file.directory" value="<%= @zanata_storage_dir %>/files"/>
+        <property name="zanata.email.defaultfromaddress" value="<%= @zanata_default_from_address %>"/>
+<% if @zanata_smtp_host != '' -%>
+        <property name="zanata.smtp.host" value="<%= @zanata_smtp_host %>" />
+<% end -%>
+<% if @zanata_smtp_port != '' -%>
+        <property name="zanata.smtp.port" value="<%= @zanata_smtp_port %>" />
+<% end -%>
+<% if @zanata_smtp_username != '' -%>
+        <property name="zanata.smtp.username" value="<%= @zanata_smtp_username %>" />
+<% end -%>
+<% if @zanata_smtp_password != '' -%>
+        <property name="zanata.smtp.password" value="<%= @zanata_smtp_password %>" />
+<% end -%>
+<% if @zanata_smtp_tls != '' -%>
+        <property name="zanata.smtp.tls" value="<%= @zanata_smtp_tls %>" />
+<% end -%>
+<% if @zanata_smtp_ssl != '' -%>
+        <property name="zanata.smtp.ssl" value="<%= @zanata_smtp_ssl %>" />
+<% end -%>
+<% end -%>
     </system-properties>
-
-
     <management>
         <security-realms>
             <security-realm name="ManagementRealm">
@@ -455,6 +488,7 @@
         </subsystem>
         <subsystem xmlns="urn:jboss:domain:naming:2.0">
             <bindings>
+<% if @zanata_main_version.to_i < 4 -%>
 <% if @zanata_openid_provider_url == '' -%>
                 <simple name="java:global/zanata/security/auth-policy-names/internal" value="zanata.internal"/>
 <% end -%>
@@ -484,6 +518,8 @@
 <% if @zanata_smtp_ssl != '' -%>
                 <simple name="java:global/zanata/smtp/ssl" value="<%= @zanata_smtp_ssl %>" />
 <% end -%>
+<% end -%>
+
             </bindings>
             <remote-naming />
         </subsystem>
