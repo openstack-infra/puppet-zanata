@@ -1,0 +1,9 @@
+Code-Review+2: Clark Boylan <cboylan@sapwetik.org>
+Code-Review+2: Ian Wienand <iwienand@redhat.com>
+Workflow+1: Ian Wienand <iwienand@redhat.com>
+Verified+2: Zuul
+Submitted-by: Zuul
+Submitted-at: Wed, 29 Nov 2017 00:07:26 +0000
+Reviewed-on: https://review.openstack.org/506795
+Project: openstack-infra/puppet-zanata
+Branch: refs/heads/master
